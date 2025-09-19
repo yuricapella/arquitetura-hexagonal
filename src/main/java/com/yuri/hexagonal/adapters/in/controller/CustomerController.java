@@ -6,6 +6,7 @@ import com.yuri.hexagonal.adapters.out.client.response.CustomerResponse;
 import com.yuri.hexagonal.application.core.domain.Customer;
 import com.yuri.hexagonal.application.ports.in.FindCustomerByIdInputPort;
 import com.yuri.hexagonal.application.ports.in.InsertCustomerInputPort;
+import com.yuri.hexagonal.application.ports.in.UpdateCustomerInputPort;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -16,11 +17,13 @@ public class CustomerController {
 
     private final InsertCustomerInputPort insertCustomerInputPort;
     private final FindCustomerByIdInputPort findCustomerByIdInputPort;
+    private final UpdateCustomerInputPort updateCustomerInputPort;
     private final CustomerMapper customerMapper;
 
-    public CustomerController(InsertCustomerInputPort insertCustomerInputPort, FindCustomerByIdInputPort findCustomerByIdInputPort, CustomerMapper customerMapper) {
+    public CustomerController(InsertCustomerInputPort insertCustomerInputPort, FindCustomerByIdInputPort findCustomerByIdInputPort, UpdateCustomerInputPort updateCustomerInputPort, CustomerMapper customerMapper) {
         this.insertCustomerInputPort = insertCustomerInputPort;
         this.findCustomerByIdInputPort = findCustomerByIdInputPort;
+        this.updateCustomerInputPort = updateCustomerInputPort;
         this.customerMapper = customerMapper;
     }
 
@@ -37,4 +40,12 @@ public class CustomerController {
         CustomerResponse customerResponse = customerMapper.toCustomerResponse(customer);
         return ResponseEntity.ok().body(customerResponse);
      }
+
+     @PutMapping("/{id}")
+    public ResponseEntity<Void> update(@PathVariable final String id, @Valid @RequestBody CustomerRequest customerRequest){
+        Customer customer = customerMapper.toCustomer(customerRequest);
+        customer.setId(id);
+        updateCustomerInputPort.update(customer, customerRequest.getZipCode());
+        return ResponseEntity.noContent().build();
+    }
 }
