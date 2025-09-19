@@ -4,6 +4,7 @@ import com.yuri.hexagonal.adapters.in.controller.mapper.CustomerMapper;
 import com.yuri.hexagonal.adapters.in.controller.request.CustomerRequest;
 import com.yuri.hexagonal.adapters.out.client.response.CustomerResponse;
 import com.yuri.hexagonal.application.core.domain.Customer;
+import com.yuri.hexagonal.application.ports.in.DeleteCustomerByIdInputPort;
 import com.yuri.hexagonal.application.ports.in.FindCustomerByIdInputPort;
 import com.yuri.hexagonal.application.ports.in.InsertCustomerInputPort;
 import com.yuri.hexagonal.application.ports.in.UpdateCustomerInputPort;
@@ -18,12 +19,14 @@ public class CustomerController {
     private final InsertCustomerInputPort insertCustomerInputPort;
     private final FindCustomerByIdInputPort findCustomerByIdInputPort;
     private final UpdateCustomerInputPort updateCustomerInputPort;
+    private final DeleteCustomerByIdInputPort deleteCustomerByIdInputPort;
     private final CustomerMapper customerMapper;
 
-    public CustomerController(InsertCustomerInputPort insertCustomerInputPort, FindCustomerByIdInputPort findCustomerByIdInputPort, UpdateCustomerInputPort updateCustomerInputPort, CustomerMapper customerMapper) {
+    public CustomerController(InsertCustomerInputPort insertCustomerInputPort, FindCustomerByIdInputPort findCustomerByIdInputPort, UpdateCustomerInputPort updateCustomerInputPort, DeleteCustomerByIdInputPort deleteCustomerByIdInputPort, CustomerMapper customerMapper) {
         this.insertCustomerInputPort = insertCustomerInputPort;
         this.findCustomerByIdInputPort = findCustomerByIdInputPort;
         this.updateCustomerInputPort = updateCustomerInputPort;
+        this.deleteCustomerByIdInputPort = deleteCustomerByIdInputPort;
         this.customerMapper = customerMapper;
     }
 
@@ -46,6 +49,12 @@ public class CustomerController {
         Customer customer = customerMapper.toCustomer(customerRequest);
         customer.setId(id);
         updateCustomerInputPort.update(customer, customerRequest.getZipCode());
+        return ResponseEntity.noContent().build();
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> delete(@PathVariable final String id){
+        deleteCustomerByIdInputPort.delete(id);
         return ResponseEntity.noContent().build();
     }
 }
