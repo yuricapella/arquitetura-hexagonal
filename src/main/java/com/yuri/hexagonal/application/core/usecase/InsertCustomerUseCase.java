@@ -5,9 +5,7 @@ import com.yuri.hexagonal.application.core.domain.Customer;
 import com.yuri.hexagonal.application.ports.in.InsertCustomerInputPort;
 import com.yuri.hexagonal.application.ports.out.FindAddressByZipCodeOutputPort;
 import com.yuri.hexagonal.application.ports.out.InsertCustomerOutputPort;
-import org.springframework.stereotype.Component;
 
-@Component
 public class InsertCustomerUseCase implements InsertCustomerInputPort {
 
     private final FindAddressByZipCodeOutputPort findAddressByZipCodeOutputPort;
