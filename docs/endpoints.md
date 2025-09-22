@@ -52,9 +52,9 @@ isso mostra todos os customers cadastrados, só pegar o ID
 - **Body (raw/json):**
 ```json
 {
-  "name": "Yuri Atualizado",
-  "cpf": "12345678910",
-  "zipCode": "38400000"
+  "name": "Yuri atualizado",
+  "zipCode": "38400001",
+  "cpf": "12345678910"
 }
 ```
 

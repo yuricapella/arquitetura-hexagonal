@@ -55,3 +55,10 @@ kafka:
 - Portas 9092 e 9093 abertas.
 
 
+Obs: após a configuração adicional do kafka estar ok, os "erros" com mapstruct sumiram.
+
+## **Resumo das Principais Alterações no `wiremock`**
+
+Ao invés de baixar o arquivo e rodar um serviço local do wiremock, 
+eu coloquei dependencia no pom xml e fiz a classe WireMockStandaloneRunner
+Nessa classe é só dar run e o wiremock já está funcional
